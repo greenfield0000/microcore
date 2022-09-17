@@ -6,7 +6,6 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fasthttp/router v1.4.12
 	github.com/gofrs/uuid v4.3.0+incompatible
-	github.com/greenfield0000/microcore v0.0.0-20220917205205-23f76312d384
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/pflag v1.0.5

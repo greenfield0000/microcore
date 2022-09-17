@@ -1,4 +1,4 @@
-package middlerware
+package microcore
 
 import (
 	jwt_go "github.com/dgrijalva/jwt-go"

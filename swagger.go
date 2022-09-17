@@ -1,4 +1,4 @@
-package swagger
+package microcore
 
 import (
 	"github.com/fasthttp/router"

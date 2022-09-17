@@ -1,4 +1,4 @@
-package http_common
+package microcore
 
 type BaseResponseWrapper struct {
 	Response BaseResponse `json:"response"`

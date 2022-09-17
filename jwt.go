@@ -1,9 +1,8 @@
-package jwt
+package microcore
 
 import (
 	"errors"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
 	"github.com/valyala/fasthttp"
 	"microcore/configuration"
 	"microcore/security/jwt/storage"
