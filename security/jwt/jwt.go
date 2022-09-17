@@ -1,11 +1,11 @@
 package jwt
 
 import (
-	"bonus/pkg/configuration"
-	"bonus/pkg/security/jwt/storage"
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/greenfield0000/microcore/configuration"
+	"github.com/greenfield0000/microcore/security/jwt/storage"
 	"github.com/valyala/fasthttp"
 	"os"
 	"strings"

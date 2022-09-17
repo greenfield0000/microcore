@@ -1,16 +1,15 @@
 package middlerware
 
 import (
-	"bonus/internal/domains"
-	"bonus/internal/service"
-	"bonus/pkg/http-common"
-	middleware_auth "bonus/pkg/middlerware/middleware-auth"
-	"bonus/pkg/security"
-	"bonus/pkg/security/jwt"
-	"bonus/pkg/security/jwt/storage"
 	"encoding/json"
 	jwt_go "github.com/dgrijalva/jwt-go"
+	"github.com/greenfield0000/microcore/http-common"
+	middleware_auth "github.com/greenfield0000/microcore/middlerware/middleware-auth"
+	"github.com/greenfield0000/microcore/security"
+	"github.com/greenfield0000/microcore/security/jwt"
+	"github.com/greenfield0000/microcore/security/jwt/storage"
 	"github.com/valyala/fasthttp"
+	"microcore/middlerware/domains"
 	"time"
 )
 
@@ -26,6 +25,9 @@ const (
 	corsExposeHeaders    = "Access-Token"
 )
 
+type Service interface {
+}
+
 type IMiddleWare interface {
 	wareAll(ctx *fasthttp.RequestCtx)
 	WareLogin(next fasthttp.RequestHandler, security *jwt.Security) fasthttp.RequestHandler
@@ -38,7 +40,7 @@ type IMiddleWare interface {
 type authMiddleWare struct {
 	IMiddleWare
 	storage      *storage.JwtStorage
-	service      *service.Service
+	service      *Service
 	passwordHash *security.PasswordHash
 }
 
@@ -53,7 +55,7 @@ func CORS(next fasthttp.RequestHandler) fasthttp.RequestHandler {
 	}
 }
 
-func NewMiddleWare(storage *storage.JwtStorage, service *service.Service) *authMiddleWare {
+func NewMiddleWare(storage *storage.JwtStorage, service *Service) *authMiddleWare {
 	return &authMiddleWare{storage: storage, passwordHash: &security.PasswordHash{}, service: service}
 }
 
@@ -187,6 +189,7 @@ func (m authMiddleWare) WareRegistry(next fasthttp.RequestHandler, security *jwt
 		}
 
 		acc, err := m.service.GetByEmail(accountRegistry.Email)
+		next(ctx)
 		if acc != nil {
 			ctx.SetStatusCode(fasthttp.StatusOK)
 			response := http_common.CreateErrorMessage("Имя занято")
