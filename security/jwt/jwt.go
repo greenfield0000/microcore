@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/greenfield0000/microcore/configuration"
-	"github.com/greenfield0000/microcore/security/jwt/storage"
 	"github.com/valyala/fasthttp"
+	"microcore/configuration"
+	"microcore/security/jwt/storage"
 	"os"
 	"strings"
 	"time"
@@ -141,17 +141,10 @@ func (s *Security) getToken(tokenString string, secretKey string) (*jwt.Token, e
 }
 
 func (s *Security) TokenValid(token *jwt.Token) bool {
-	if _, ok := s.GetTokenClaims(token).(jwt.MapClaims); ok && token.Valid && token.Claims.(jwt.MapClaims).VerifyExpiresAt(time.Now().Unix(), true) {
+	if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid && token.Claims.(jwt.MapClaims).VerifyExpiresAt(time.Now().Unix(), true) {
 		return true
 	}
 	return false
-}
-
-func (s *Security) GetTokenClaims(token *jwt.Token) jwt.Claims {
-	if token == nil {
-		return nil
-	}
-	return token.Claims
 }
 
 func (s *Security) extractTokensFromHeader(r *fasthttp.Request) (accessToken *jwt.Token, refreshToken *jwt.Token, err error) {
