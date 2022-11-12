@@ -1,7 +1,0 @@
-[submodule "middleware"]
-	path = middleware
-	url = https://github.com/greenfield0000/microcore
-
-[submodule "configuration"]
-    path = configuration
-	url = https://github.com/greenfield0000/microcore
