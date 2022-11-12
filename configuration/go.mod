@@ -1,3 +1,3 @@
 module greenfield0000/microcore/configuration
 
-go 1.13
+go 1.17
