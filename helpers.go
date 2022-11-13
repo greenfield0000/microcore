@@ -1,4 +1,4 @@
-package http_common
+package microcore
 
 func CreateResponseResult(result interface{}) BaseResponse {
 	return BaseResponse{

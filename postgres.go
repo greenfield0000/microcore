@@ -1,14 +1,13 @@
-package database
+package microcore
 
 import (
-	"bonus/pkg/configuration"
 	"errors"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	"time"
 )
 
-func NewDatabase(cfg configuration.Database) (*sqlx.DB, error) {
+func NewDatabase(cfg Database) (*sqlx.DB, error) {
 
 	connect, err := sqlx.Connect(cfg.Drivername,
 		fmt.Sprintf(

@@ -1,4 +1,4 @@
-package swagger
+package microcore
 
 import (
 	"github.com/fasthttp/router"
@@ -7,7 +7,7 @@ import (
 	"github.com/valyala/fasthttp/fasthttpadaptor"
 )
 
-func Init(r *router.Router) {
+func InitRouter(r *router.Router) {
 	if r != nil {
 		r.ServeFilesCustom("/docs/{filepath:*}", &fasthttp.FS{
 			Root: "./generations/swagger/",

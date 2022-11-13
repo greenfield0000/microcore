@@ -1,15 +1,10 @@
-package middlerware
+package microcore
 
 import (
-	"bonus/internal/handler/params/paramauth"
-	"bonus/internal/service"
-	http_common "bonus/pkg/http-common"
-	"bonus/pkg/security"
-	"bonus/pkg/security/jwt"
-	"bonus/pkg/security/jwt/storage"
 	"encoding/json"
 	"fmt"
 	jwt_go "github.com/dgrijalva/jwt-go"
+	"github.com/greenfield0000/microcore/paramauth"
 	"github.com/valyala/fasthttp"
 )
 
@@ -27,18 +22,18 @@ const (
 
 type IMiddleWare interface {
 	wareAll(ctx *fasthttp.RequestCtx)
-	WareLogin(next fasthttp.RequestHandler, security *jwt.Security) fasthttp.RequestHandler
-	WareLogout(next fasthttp.RequestHandler, security *jwt.Security) fasthttp.RequestHandler
-	WareRegistry(next fasthttp.RequestHandler, security *jwt.Security) fasthttp.RequestHandler
+	WareLogin(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler
+	WareLogout(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler
+	WareRegistry(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler
 	WareCommon(next fasthttp.RequestHandler) fasthttp.RequestHandler
-	WareSecurity(next fasthttp.RequestHandler, security *jwt.Security) fasthttp.RequestHandler
+	WareSecurity(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler
 }
 
 type authMiddleWare struct {
 	IMiddleWare
-	storage      *storage.JwtStorage
-	service      *service.Service
-	passwordHash *security.PasswordHash
+	storage      *JwtStorage
+	service      *CoreService
+	passwordHash *PasswordHash
 }
 
 func CORS(next fasthttp.RequestHandler) fasthttp.RequestHandler {
@@ -52,11 +47,11 @@ func CORS(next fasthttp.RequestHandler) fasthttp.RequestHandler {
 	}
 }
 
-func NewMiddleWare(storage *storage.JwtStorage, service *service.Service) *authMiddleWare {
-	return &authMiddleWare{storage: storage, passwordHash: &security.PasswordHash{}, service: service}
+func NewMiddleWare(storage *JwtStorage, service *CoreService) *authMiddleWare {
+	return &authMiddleWare{storage: storage, passwordHash: &PasswordHash{}, service: service}
 }
 
-func (m authMiddleWare) WareSecurity(next fasthttp.RequestHandler, security *jwt.Security) fasthttp.RequestHandler {
+func (m authMiddleWare) WareSecurity(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler {
 	// Если токен валидный, то делаем, что делали
 	jwtStorage := security.JwtStorage()
 	return func(ctx *fasthttp.RequestCtx) {
@@ -115,7 +110,7 @@ func (m authMiddleWare) WareCommon(next fasthttp.RequestHandler) fasthttp.Reques
 	}
 }
 
-func (m authMiddleWare) WareLogin(next fasthttp.RequestHandler, security *jwt.Security) fasthttp.RequestHandler {
+func (m authMiddleWare) WareLogin(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler {
 	return func(ctx *fasthttp.RequestCtx) {
 		defer m.wareAll(ctx)
 		next(ctx)
@@ -132,7 +127,7 @@ func (m authMiddleWare) WareLogin(next fasthttp.RequestHandler, security *jwt.Se
 			ctx.Response.Header.Set(fasthttp.HeaderAuthorization, fmt.Sprintf("Bearer %s", accessToken))
 			ctx.Response.Header.Set(refreshTokenKey, tokenPair.RefreshToken)
 
-			respWrap := http_common.CreateResponseResult(paramauth.AccountLoginResponseData{
+			respWrap := CreateResponseResult(paramauth.AccountLoginResponseData{
 				Token: accessToken,
 			})
 
@@ -149,7 +144,7 @@ func (m authMiddleWare) WareLogin(next fasthttp.RequestHandler, security *jwt.Se
 	}
 }
 
-func (m authMiddleWare) WareLogout(next fasthttp.RequestHandler, security *jwt.Security) fasthttp.RequestHandler {
+func (m authMiddleWare) WareLogout(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler {
 	jwtStorage := security.JwtStorage()
 	return func(ctx *fasthttp.RequestCtx) {
 		defer m.wareAll(ctx)
@@ -171,7 +166,7 @@ func (m authMiddleWare) wareAll(outerCtx *fasthttp.RequestCtx) {
 	outerCtx.SetContentType(contentTypeJson)
 }
 
-func (m authMiddleWare) WareRegistry(next fasthttp.RequestHandler, security *jwt.Security) fasthttp.RequestHandler {
+func (m authMiddleWare) WareRegistry(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler {
 	return func(ctx *fasthttp.RequestCtx) {
 		next(ctx)
 	}

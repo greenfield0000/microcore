@@ -1,4 +1,4 @@
-package configuration
+package microcore
 
 import (
 	"encoding/json"

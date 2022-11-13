@@ -1,8 +1,6 @@
-package jwt
+package microcore
 
 import (
-	"bonus/pkg/configuration"
-	"bonus/pkg/security/jwt/storage"
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
@@ -25,8 +23,8 @@ type ContextKey struct {
 }
 
 type Security struct {
-	jwtConfig  configuration.Jwt
-	jwtStorage storage.JwtStorage
+	jwtConfig  Jwt
+	jwtStorage JwtStorage
 	contextKey ContextKey
 }
 
@@ -34,15 +32,15 @@ func (s *Security) ContextKey() ContextKey {
 	return s.contextKey
 }
 
-func (s *Security) JwtConfig() configuration.Jwt {
+func (s *Security) JwtConfig() Jwt {
 	return s.jwtConfig
 }
 
-func (s *Security) JwtStorage() storage.JwtStorage {
+func (s *Security) JwtStorage() JwtStorage {
 	return s.jwtStorage
 }
 
-func NewSecurity(jwtConfig configuration.Jwt, jwtStorage storage.JwtStorage) *Security {
+func NewSecurity(jwtConfig Jwt, jwtStorage JwtStorage) *Security {
 	err := os.Setenv(accessSecretKey, jwtConfig.Accesssecret)
 	if err != nil {
 		return nil

@@ -1,4 +1,4 @@
-package security
+package microcore
 
 import "golang.org/x/crypto/bcrypt"
 
