@@ -1,4 +1,4 @@
-module github.com/greenfield0000/microcore
+module greenfield0000/microcore
 
 go 1.17
 

@@ -1,6 +1,4 @@
-package paramauth
-
-import "github.com/greenfield0000/microcore"
+package microcore
 
 // swagger:parameters LoginReq
 type LoginReq struct {
@@ -29,7 +27,7 @@ type AccountLoginParam struct {
 
 // swagger:model AccountLoginResponse
 type AccountLoginResponse struct {
-	microcore.BaseResponse
+	BaseResponse
 	Result AccountLoginResponseData `json:"result"`
 }
 

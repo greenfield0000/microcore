@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	jwt_go "github.com/dgrijalva/jwt-go"
-	"github.com/greenfield0000/microcore/paramauth"
 	"github.com/valyala/fasthttp"
 )
 
@@ -127,7 +126,7 @@ func (m authMiddleWare) WareLogin(next fasthttp.RequestHandler, security *Securi
 			ctx.Response.Header.Set(fasthttp.HeaderAuthorization, fmt.Sprintf("Bearer %s", accessToken))
 			ctx.Response.Header.Set(refreshTokenKey, tokenPair.RefreshToken)
 
-			respWrap := CreateResponseResult(paramauth.AccountLoginResponseData{
+			respWrap := CreateResponseResult(AccountLoginResponseData{
 				Token: accessToken,
 			})
 
