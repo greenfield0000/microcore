@@ -8,12 +8,12 @@ import (
 )
 
 type Swagger interface {
-	InitRouter(r *router.Router)
+	AddSwaggerRouter(r *router.Router)
 }
 
 type CommonSwagger struct{}
 
-func (c CommonSwagger) InitRouter(r *router.Router) {
+func (c CommonSwagger) AddSwaggerRouter(r *router.Router) {
 	if r != nil {
 		r.ServeFilesCustom("/docs/{filepath:*}", &fasthttp.FS{
 			Root: "./generations/swagger/",
@@ -28,6 +28,6 @@ func (c CommonSwagger) InitRouter(r *router.Router) {
 	}
 }
 
-func NewSwagger(r *router.Router) Swagger {
+func NewSwagger() Swagger {
 	return CommonSwagger{}
 }
