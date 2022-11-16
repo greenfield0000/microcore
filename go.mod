@@ -7,6 +7,7 @@ require (
 	github.com/fasthttp/router v1.4.13
 	github.com/gofrs/uuid v4.3.1+incompatible
 	github.com/jmoiron/sqlx v1.3.5
+	github.com/lib/pq v1.2.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.14.0

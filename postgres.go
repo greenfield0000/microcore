@@ -4,11 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 	"time"
 )
 
 func NewDatabase(cfg Database) (*sqlx.DB, error) {
-
 	connect, err := sqlx.Connect(cfg.Drivername,
 		fmt.Sprintf(
 			"host=%s user=%s  password=%s dbname=%s port=%s sslmode=%s",

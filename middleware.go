@@ -7,6 +7,42 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
+// swagger:parameters LoginReq
+type LoginReq struct {
+	// in: body
+	// required: true
+	LoginParam AccountLoginParam
+}
+
+// AccountLoginParam
+//
+// Сущность для входа в приложение
+//
+// swagger:model AccountLoginParam
+type AccountLoginParam struct {
+	// Email адрес пользователя
+	//
+	// required: true
+	// example: user@gmail.com
+	Email string `json:"email"`
+	// Пароль пользователя
+	//
+	// required: true
+	// example: superPasswordInTheWorld@1123!!
+	Password string `json:"password"`
+}
+
+// swagger:model AccountLoginResponse
+type AccountLoginResponse struct {
+	BaseResponse
+	Result AccountLoginResponseData `json:"result"`
+}
+
+// swagger:model AccountLoginResponseData
+type AccountLoginResponseData struct {
+	Token string `json:"token"`
+}
+
 const (
 	contentTypeJson = "application/json; charset=utf-8"
 	accessTokenKey  = "access-token"
@@ -19,23 +55,18 @@ const (
 	corsExposeHeaders    = "Authorization, refresh-token"
 )
 
-type IMiddleWare interface {
-	wareAll(ctx *fasthttp.RequestCtx)
-	WareLogin(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler
-	WareLogout(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler
-	WareRegistry(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler
-	WareCommon(next fasthttp.RequestHandler) fasthttp.RequestHandler
-	WareSecurity(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler
+type CorsMiddleWare interface {
+	CORS(next fasthttp.RequestHandler) fasthttp.RequestHandler
 }
 
-type authMiddleWare struct {
-	IMiddleWare
-	storage      *JwtStorage
-	service      *CoreService
-	passwordHash *PasswordHash
+type CorsMiddleWareCommon struct {
 }
 
-func CORS(next fasthttp.RequestHandler) fasthttp.RequestHandler {
+func NewCorsMiddleWare() CorsMiddleWare {
+	return CorsMiddleWareCommon{}
+}
+
+func (c CorsMiddleWareCommon) CORS(next fasthttp.RequestHandler) fasthttp.RequestHandler {
 	return func(ctx *fasthttp.RequestCtx) {
 		ctx.Response.Header.Set("Access-Control-Allow-Credentials", corsAllowCredentials)
 		ctx.Response.Header.Set("Access-Control-Allow-Headers", corsAllowHeaders)
@@ -46,11 +77,34 @@ func CORS(next fasthttp.RequestHandler) fasthttp.RequestHandler {
 	}
 }
 
-func NewMiddleWare(storage *JwtStorage, service *CoreService) *authMiddleWare {
-	return &authMiddleWare{storage: storage, passwordHash: &PasswordHash{}, service: service}
+type IMiddleWare interface {
+	wareAll(ctx *fasthttp.RequestCtx)
+	WareLogin(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler
+	WareLogout(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler
+	WareRegistry(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler
+	WareCommon(next fasthttp.RequestHandler) fasthttp.RequestHandler
+	WareSecurity(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler
 }
 
-func (m authMiddleWare) WareSecurity(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler {
+type CommonMiddleWare struct {
+	storage      *JwtStorage
+	service      *CoreService
+	passwordHash *PasswordHash
+
+	CorsMiddleWare      CorsMiddleWare
+	HttpRequestResponse HttpRequestResponse
+}
+
+func NewMiddleWare(storage *JwtStorage, service *CoreService) *CommonMiddleWare {
+	return &CommonMiddleWare{
+		storage:             storage,
+		service:             service,
+		CorsMiddleWare:      NewCorsMiddleWare(),
+		HttpRequestResponse: NewHttpRequestResponse(),
+	}
+}
+
+func (m CommonMiddleWare) WareSecurity(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler {
 	// Если токен валидный, то делаем, что делали
 	jwtStorage := security.JwtStorage()
 	return func(ctx *fasthttp.RequestCtx) {
@@ -102,14 +156,14 @@ func (m authMiddleWare) WareSecurity(next fasthttp.RequestHandler, security *Sec
 	}
 }
 
-func (m authMiddleWare) WareCommon(next fasthttp.RequestHandler) fasthttp.RequestHandler {
+func (m CommonMiddleWare) WareCommon(next fasthttp.RequestHandler) fasthttp.RequestHandler {
 	return func(ctx *fasthttp.RequestCtx) {
 		defer m.wareAll(ctx)
 		next(ctx)
 	}
 }
 
-func (m authMiddleWare) WareLogin(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler {
+func (m CommonMiddleWare) WareLogin(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler {
 	return func(ctx *fasthttp.RequestCtx) {
 		defer m.wareAll(ctx)
 		next(ctx)
@@ -126,7 +180,7 @@ func (m authMiddleWare) WareLogin(next fasthttp.RequestHandler, security *Securi
 			ctx.Response.Header.Set(fasthttp.HeaderAuthorization, fmt.Sprintf("Bearer %s", accessToken))
 			ctx.Response.Header.Set(refreshTokenKey, tokenPair.RefreshToken)
 
-			respWrap := CreateResponseResult(AccountLoginResponseData{
+			respWrap := m.HttpRequestResponse.CreateResponseResult(AccountLoginResponseData{
 				Token: accessToken,
 			})
 
@@ -143,7 +197,7 @@ func (m authMiddleWare) WareLogin(next fasthttp.RequestHandler, security *Securi
 	}
 }
 
-func (m authMiddleWare) WareLogout(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler {
+func (m CommonMiddleWare) WareLogout(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler {
 	jwtStorage := security.JwtStorage()
 	return func(ctx *fasthttp.RequestCtx) {
 		defer m.wareAll(ctx)
@@ -161,11 +215,11 @@ func (m authMiddleWare) WareLogout(next fasthttp.RequestHandler, security *Secur
 	}
 }
 
-func (m authMiddleWare) wareAll(outerCtx *fasthttp.RequestCtx) {
+func (m CommonMiddleWare) wareAll(outerCtx *fasthttp.RequestCtx) {
 	outerCtx.SetContentType(contentTypeJson)
 }
 
-func (m authMiddleWare) WareRegistry(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler {
+func (m CommonMiddleWare) WareRegistry(next fasthttp.RequestHandler, security *Security) fasthttp.RequestHandler {
 	return func(ctx *fasthttp.RequestCtx) {
 		next(ctx)
 	}

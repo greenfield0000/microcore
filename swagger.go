@@ -7,7 +7,13 @@ import (
 	"github.com/valyala/fasthttp/fasthttpadaptor"
 )
 
-func InitRouter(r *router.Router) {
+type Swagger interface {
+	InitRouter(r *router.Router)
+}
+
+type CommonSwagger struct{}
+
+func (c CommonSwagger) InitRouter(r *router.Router) {
 	if r != nil {
 		r.ServeFilesCustom("/docs/{filepath:*}", &fasthttp.FS{
 			Root: "./generations/swagger/",
@@ -20,4 +26,8 @@ func InitRouter(r *router.Router) {
 			config.PersistAuthorization = true
 		})))
 	}
+}
+
+func NewSwagger(r *router.Router) Swagger {
+	return CommonSwagger{}
 }
