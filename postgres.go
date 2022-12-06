@@ -1,4 +1,4 @@
-package microcore
+package main
 
 import (
 	"errors"
@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func NewDatabase(cfg Database) (*sqlx.DB, error) {
+func NewDatabase(cfg DatabaseConfig) (*sqlx.DB, error) {
 	connect, err := sqlx.Connect(cfg.Drivername,
 		fmt.Sprintf(
 			"host=%s user=%s  password=%s dbname=%s port=%s sslmode=%s",
@@ -37,7 +37,7 @@ func NewDatabase(cfg Database) (*sqlx.DB, error) {
 	//go func() {
 	//	for {
 	//		// Connected
-	//		fmt.Println(fmt.Sprintf("Database count connection: %v", connect.DB.Stats()))
+	//		fmt.Println(fmt.Sprintf("DatabaseConfig count connection: %v", connect.DB.Stats()))
 	//		time.Sleep(10 * time.Second)
 	//	}
 	//}()

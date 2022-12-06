@@ -1,9 +1,9 @@
-package microcore
+package main
 
 import (
 	"errors"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
+	jwt_go "github.com/dgrijalva/jwt-go"
 	"github.com/valyala/fasthttp"
 	"os"
 	"strings"
@@ -23,7 +23,7 @@ type ContextKey struct {
 }
 
 type Security struct {
-	jwtConfig  Jwt
+	jwtConfig  jwtConfig
 	jwtStorage JwtStorage
 	contextKey ContextKey
 }
@@ -32,7 +32,7 @@ func (s *Security) ContextKey() ContextKey {
 	return s.contextKey
 }
 
-func (s *Security) JwtConfig() Jwt {
+func (s *Security) JwtConfig() jwtConfig {
 	return s.jwtConfig
 }
 
@@ -40,12 +40,12 @@ func (s *Security) JwtStorage() JwtStorage {
 	return s.jwtStorage
 }
 
-func NewSecurity(jwtConfig Jwt, jwtStorage JwtStorage) *Security {
-	err := os.Setenv(accessSecretKey, jwtConfig.Accesssecret)
+func NewSecurity(jwtConfig jwtConfig, jwtStorage JwtStorage) *Security {
+	err := os.Setenv(accessSecretKey, jwtConfig.AccessSecret)
 	if err != nil {
 		return nil
 	}
-	err = os.Setenv(refreshSecretKey, jwtConfig.Refreshsecret)
+	err = os.Setenv(refreshSecretKey, jwtConfig.RefreshSecret)
 	if err != nil {
 		return nil
 	}
@@ -66,8 +66,8 @@ type TokenDetails struct {
 }
 
 type CustomTokenDetail struct {
-	RefreshToken *jwt.Token
-	AccessToken  *jwt.Token
+	RefreshToken *jwt_go.Token
+	AccessToken  *jwt_go.Token
 }
 
 func (s *Security) CreateTokenPair(accountId int64) (*TokenDetails, error) {
@@ -101,11 +101,11 @@ func (s *Security) CreateTokenPair(accountId int64) (*TokenDetails, error) {
 }
 
 func (s *Security) createAccessToken(accountId int64, td *TokenDetails) error {
-	atClaims := jwt.MapClaims{}
+	atClaims := jwt_go.MapClaims{}
 	atClaims["access_uuid"] = td.AccessUuid
 	atClaims[accountIdKey] = accountId
 	atClaims["exp"] = td.AtExpires
-	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
+	at := jwt_go.NewWithClaims(jwt_go.SigningMethodHS256, atClaims)
 	signedString, err := at.SignedString([]byte(os.Getenv(accessSecretKey)))
 	if err == nil {
 		td.AccessToken = signedString
@@ -114,11 +114,11 @@ func (s *Security) createAccessToken(accountId int64, td *TokenDetails) error {
 }
 
 func (s *Security) createRefreshToken(accountId int64, td *TokenDetails) error {
-	rtClaims := jwt.MapClaims{}
+	rtClaims := jwt_go.MapClaims{}
 	rtClaims["refresh_uuid"] = td.RefreshUuid
 	rtClaims[accountIdKey] = accountId
 	rtClaims["exp"] = td.RtExpires
-	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
+	rt := jwt_go.NewWithClaims(jwt_go.SigningMethodHS256, rtClaims)
 	signedString, err := rt.SignedString([]byte(os.Getenv(refreshSecretKey)))
 	if err == nil {
 		td.RefreshToken = signedString
@@ -126,10 +126,10 @@ func (s *Security) createRefreshToken(accountId int64, td *TokenDetails) error {
 	return err
 }
 
-func (s *Security) getToken(tokenString string, secretKey string) (*jwt.Token, error) {
-	parser := jwt.Parser{SkipClaimsValidation: true}
-	token, err := parser.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+func (s *Security) getToken(tokenString string, secretKey string) (*jwt_go.Token, error) {
+	parser := jwt_go.Parser{SkipClaimsValidation: true}
+	token, err := parser.Parse(tokenString, func(token *jwt_go.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt_go.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		//return []byte(os.Getenv(accessSecretKey)), nil
@@ -138,14 +138,14 @@ func (s *Security) getToken(tokenString string, secretKey string) (*jwt.Token, e
 	return token, err
 }
 
-func (s *Security) TokenValid(token *jwt.Token) bool {
-	if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid && token.Claims.(jwt.MapClaims).VerifyExpiresAt(time.Now().Unix(), true) {
+func (s *Security) TokenValid(token *jwt_go.Token) bool {
+	if _, ok := token.Claims.(jwt_go.MapClaims); ok && token.Valid && token.Claims.(jwt_go.MapClaims).VerifyExpiresAt(time.Now().Unix(), true) {
 		return true
 	}
 	return false
 }
 
-func (s *Security) extractTokensFromHeader(r *fasthttp.Request) (accessToken *jwt.Token, refreshToken *jwt.Token, err error) {
+func (s *Security) extractTokensFromHeader(r *fasthttp.Request) (accessToken *jwt_go.Token, refreshToken *jwt_go.Token, err error) {
 	bearToken := string(r.Header.Peek("Authorization"))
 	accessStrArr := strings.Split(bearToken, " ")
 	if len(accessStrArr) != 2 {

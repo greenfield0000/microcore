@@ -1,4 +1,4 @@
-package microcore
+package main
 
 import (
 	"encoding/json"
@@ -23,12 +23,12 @@ func init() {
 	_ = viper.BindPFlags(pflag.CommandLine)
 }
 
-type Server struct {
+type ServerConfig struct {
 	Host string `yaml:"host"`
 	Port string `yaml:"port"`
 }
 
-type Database struct {
+type DatabaseConfig struct {
 	Drivername string `yaml:"drivername"`
 	Host       string `yaml:"host"`
 	Port       string `yaml:"port"`
@@ -38,18 +38,18 @@ type Database struct {
 	Sslmode    string `yaml:"sslmode"`
 }
 
-type Jwt struct {
-	Accesssecret  string `yaml:"accesssecret"`
-	Refreshsecret string `yaml:"refreshsecret"`
+type jwtConfig struct {
+	AccessSecret  string `yaml:"accesssecret"`
+	RefreshSecret string `yaml:"refreshsecret"`
 }
 
-type ApplicationConfig struct {
-	Server   Server   `yaml:"server"`
-	Database Database `yaml:"database"`
-	Jwt      Jwt      `yaml:"jwt"`
+type applicationConfig struct {
+	Server   ServerConfig   `yaml:"server"`
+	Database DatabaseConfig `yaml:"database"`
+	Jwt      jwtConfig      `yaml:"jwt"`
 }
 
-func InitConfig(log *logrus.Logger) (*ApplicationConfig, error) {
+func InitConfig(log *logrus.Logger) (*applicationConfig, error) {
 	environment := viper.GetString("environment")
 	if len(environment) == 0 {
 		environment = "prod"
@@ -61,7 +61,7 @@ func InitConfig(log *logrus.Logger) (*ApplicationConfig, error) {
 	config.SetConfigType(configType)
 
 	// для локальной разработки
-	var applicationConfig ApplicationConfig
+	var applicationConfig applicationConfig
 	switch environment {
 	case "local":
 		if err := config.ReadInConfig(); err != nil {
@@ -86,9 +86,9 @@ func InitConfig(log *logrus.Logger) (*ApplicationConfig, error) {
 		applicationConfig.Database.Dbname = os.Getenv("POSTGRES_DB")
 		applicationConfig.Database.Sslmode = os.Getenv("DB_SSL_MODE")
 
-		// jwt
-		applicationConfig.Jwt.Accesssecret = os.Getenv("JWT_ACCESS_SECRET")
-		applicationConfig.Jwt.Refreshsecret = os.Getenv("JWT_REFRESH_SECRET")
+		// jwtConfig
+		applicationConfig.Jwt.AccessSecret = os.Getenv("JWT_ACCESS_SECRET")
+		applicationConfig.Jwt.RefreshSecret = os.Getenv("JWT_REFRESH_SECRET")
 	}
 
 	if marshal, err := json.MarshalIndent(&applicationConfig, "", "  "); err == nil {

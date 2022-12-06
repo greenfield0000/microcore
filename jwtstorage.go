@@ -1,11 +1,11 @@
-package microcore
+package main
 
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 )
 
-const jwtTableName = "jwt"
+const jwtTableName = "jwtConfig"
 
 type JwtStorage interface {
 	IsExistExpiredToken(token string) (bool, error)
@@ -19,15 +19,15 @@ type JwtTable struct {
 	RefreshToken string `db:"refresh_token"`
 }
 
-type DatabaseJwtStorage struct {
+type databaseJwtStorage struct {
 	db *sqlx.DB
 }
 
 func NewDatabaseJwtStorage(db *sqlx.DB) JwtStorage {
-	return &DatabaseJwtStorage{db: db}
+	return &databaseJwtStorage{db: db}
 }
 
-func (d DatabaseJwtStorage) IsExistExpiredToken(token string) (bool, error) {
+func (d databaseJwtStorage) IsExistExpiredToken(token string) (bool, error) {
 	var count int64
 	if err := d.db.Get(&count, fmt.Sprintf("select count(*) from %s where access_token = $1 or refresh_token = $2", jwtTableName), token, token); err != nil {
 		return true, err
@@ -35,7 +35,7 @@ func (d DatabaseJwtStorage) IsExistExpiredToken(token string) (bool, error) {
 	return count != 0, nil
 }
 
-func (d DatabaseJwtStorage) PutExpiredToken(accessToken string, refreshToken string) error {
+func (d databaseJwtStorage) PutExpiredToken(accessToken string, refreshToken string) error {
 	query, err := d.db.Query(fmt.Sprintf("INSERT INTO %s (account_id, access_token, refresh_token) VALUES ($1, $2, $3);", jwtTableName), -1, accessToken, refreshToken)
 	if query != nil {
 		defer query.Close()

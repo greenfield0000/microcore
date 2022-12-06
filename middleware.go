@@ -1,4 +1,4 @@
-package microcore
+package main
 
 import (
 	"encoding/json"
@@ -7,19 +7,19 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-// swagger:parameters LoginReq
-type LoginReq struct {
+// swagger:parameters loginReq
+type loginReq struct {
 	// in: body
 	// required: true
-	LoginParam AccountLoginParam
+	LoginParam accountLoginParam
 }
 
-// AccountLoginParam
+// accountLoginParam
 //
 // Сущность для входа в приложение
 //
-// swagger:model AccountLoginParam
-type AccountLoginParam struct {
+// swagger:model accountLoginParam
+type accountLoginParam struct {
 	// Email адрес пользователя
 	//
 	// required: true
@@ -32,14 +32,14 @@ type AccountLoginParam struct {
 	Password string `json:"password"`
 }
 
-// swagger:model AccountLoginResponse
-type AccountLoginResponse struct {
+// swagger:model accountLoginResponse
+type accountLoginResponse struct {
 	BaseResponse
-	Result AccountLoginResponseData `json:"result"`
+	Result accountLoginResponseData `json:"result"`
 }
 
-// swagger:model AccountLoginResponseData
-type AccountLoginResponseData struct {
+// swagger:model accountLoginResponseData
+type accountLoginResponseData struct {
 	Token string `json:"token"`
 }
 
@@ -180,7 +180,7 @@ func (m CommonMiddleWare) WareLogin(next fasthttp.RequestHandler, security *Secu
 			ctx.Response.Header.Set(fasthttp.HeaderAuthorization, fmt.Sprintf("Bearer %s", accessToken))
 			ctx.Response.Header.Set(refreshTokenKey, tokenPair.RefreshToken)
 
-			respWrap := m.HttpRequestResponse.CreateResponseResult(AccountLoginResponseData{
+			respWrap := m.HttpRequestResponse.CreateResponseResult(accountLoginResponseData{
 				Token: accessToken,
 			})
 

@@ -1,4 +1,4 @@
-package microcore
+package main
 
 // swagger:model BaseResponse BaseResponse
 type BaseResponse struct {

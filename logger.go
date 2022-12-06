@@ -1,4 +1,4 @@
-package microcore
+package main
 
 import (
 	"log"
