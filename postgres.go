@@ -1,4 +1,4 @@
-package main
+package microcore
 
 import (
 	"errors"
