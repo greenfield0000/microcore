@@ -109,6 +109,14 @@ type EmailVerifierService interface {
 	IsVerifyCode(email string) (bool, error)
 }
 
+type TemplateService interface {
+	Render(path string, data interface{}) (string, error)
+}
+
+type MailService interface {
+	Send(subject string, to string, message string) error
+}
+
 type Service struct {
 	logger *logrus.Logger
 
@@ -126,4 +134,6 @@ type Service struct {
 	BalanceService
 	BalanceRobotService
 	EmailVerifierService
+	TemplateService
+	MailService
 }

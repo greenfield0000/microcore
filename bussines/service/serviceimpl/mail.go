@@ -1,8 +1,9 @@
-package commonservice
+package serviceimpl
 
 import (
 	"crypto/tls"
 	"errors"
+	"github.com/greenfield0000/microcore/bussines/service"
 	"gopkg.in/gomail.v2"
 	"net/smtp"
 	"os"
@@ -12,15 +13,11 @@ import (
 var host, login, password string
 var port int
 
-type MailSender interface {
-	Send(subject string, to string, message string) error
-}
-
 type PlainMailSender struct {
 	SmtpAuth smtp.Auth
 }
 
-func NewPlainMailSender() MailSender {
+func NewPlainMailSender() service.MailService {
 	host = os.Getenv("MAIL_HOST")
 	port, _ = strconv.Atoi(os.Getenv("MAIL_PORT"))
 	login = os.Getenv("MAIL_LOGIN")

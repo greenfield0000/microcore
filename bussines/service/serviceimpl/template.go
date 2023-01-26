@@ -1,19 +1,16 @@
-package commonservice
+package serviceimpl
 
 import (
 	"bytes"
 	"errors"
+	"github.com/greenfield0000/microcore/bussines/service"
 	"html/template"
 )
-
-type TemplateService interface {
-	Render(path string, data interface{}) (string, error)
-}
 
 type HTMLTemplateService struct {
 }
 
-func NewHTMLTemplateService() TemplateService {
+func NewHTMLTemplateService() service.TemplateService {
 	return HTMLTemplateService{}
 }
 
