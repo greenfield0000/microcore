@@ -2,10 +2,8 @@ package repository
 
 import (
 	"context"
-	"github.com/greenfield0000/microcore/bussines/repository/repositoryimpl"
 	constant "github.com/greenfield0000/microcore/constants/email"
 	"github.com/greenfield0000/microcore/domains"
-	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 	"time"
 )
@@ -113,6 +111,11 @@ type EmailVerifierRepository interface {
 	SetState(code string, stateId constant.EmailVerificationState) error
 }
 
+type EmailRepository interface {
+	GetMailForVerification() ([]domains.Email, error)
+	SetState(id uint64, stateId constant.EmailState) error
+}
+
 type Repository struct {
 	logger *logrus.Logger
 
@@ -130,25 +133,5 @@ type Repository struct {
 	BalanceRepository
 	BalanceRobotRepository
 	EmailVerifierRepository
-}
-
-func NewRepository(db *sqlx.DB, logger *logrus.Logger) *Repository {
-	return &Repository{
-		logger: logger,
-
-		AccountRepository:            repositoryimpl.NewAccountRepository(db),
-		UserRepository:               repositoryimpl.NewUserRepository(db),
-		TeamRepository:               repositoryimpl.NewTeamRepository(db),
-		AchievementRepository:        repositoryimpl.NewAchievementRepository(db),
-		MarketRepository:             repositoryimpl.NewMarketRepository(db),
-		UserTeamRepository:           repositoryimpl.NewUserTeamRepository(db),
-		UserAccountRepository:        repositoryimpl.NewUserAccountRepository(db),
-		AccountAchievementRepository: repositoryimpl.NewAccountAchievementRepository(db),
-		AccountMarketRepository:      repositoryimpl.NewAccountMarketRepository(db),
-		AccountEventRepository:       repositoryimpl.NewAccountEventRepository(db),
-		EventRepository:              repositoryimpl.NewEventRepository(db),
-		BalanceRepository:            repositoryimpl.NewBalanceRepository(db),
-		BalanceRobotRepository:       repositoryimpl.NewBalanceRobotRepository(db),
-		EmailVerifierRepository:      repositoryimpl.NewEmailVerifierRepository(db),
-	}
+	EmailRepository
 }
