@@ -1,34 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
+    <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e672fd0e-f928-48c5-a80c-acf65a4e1f78" name="Changes" comment="delete useless module" />
+    <list default="true" id="e672fd0e-f928-48c5-a80c-acf65a4e1f78" name="Changes" comment="delete useless module">
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repository.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/account.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/account_achievement.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/account_event.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/account_market.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/achievement.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/balance.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/balance_robot.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/emailverifierrepo.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/event.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/market.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/team.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/user_account.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/user_team.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/service.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/account.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/account_achievement.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/account_event.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/account_market.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/achievement.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/balance.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/balancerobot.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/emailverifierservice.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/event.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/mailerservice.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/market.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/team.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/user_account.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/user_team.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/account-achievement.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/account-event.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/account-market.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/account.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/achievement.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/balance.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/balance_robot.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/emailverifier.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/event.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/market.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/state.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/team.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/user-account.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/user-team.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/domains/user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/common/mail/mailer.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/common/template/templateservice.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/microcore.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/microcore.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/mail/emailstate.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/email/emailstate.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/mail/emailtype.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/email/emailtype.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/mail/emailverification.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/email/emailverification.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/service.go" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file:///usr/local/go" />
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
+  <component name="KubernetesApiPersistence">
+    <option name="context" value="minikube" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2Ks87P7UAo8gXVFAlEEpTdVbkss" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
+  <component name="ProjectViewState">
+    <option name="abbreviatePackageNames" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "last_opened_file_path": "/home/roman/repository/other/microcore/constants/mail",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "DefaultGoTemplateProperty": "Go File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "configurable..is.expanded": "false",
+    "configurable.GoLibrariesConfigurable.is.expanded": "false",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "/home/roman/repository/other/microcore/domains",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "go.vgo"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/constants/mail" />
+      <recent name="$PROJECT_DIR$/domains" />
+      <recent name="$PROJECT_DIR$/bussines/service/serviceimpl" />
+      <recent name="$PROJECT_DIR$/bussines" />
+      <recent name="$PROJECT_DIR$/service/template" />
+      <recent name="$PROJECT_DIR$/service/mail" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/service/common" />
+      <recent name="$PROJECT_DIR$/service" />
+      <recent name="$PROJECT_DIR$/internal" />
+      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="delete useless module" />
     <option name="LAST_COMMIT_MESSAGE" value="delete useless module" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
   </component>
 </project>
