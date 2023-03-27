@@ -9,23 +9,23 @@ import (
 var emailVerifierCheckerIsNull = fmt.Errorf("Необходимо передать кинфигурацию для проверки")
 
 type EmailVerifyCheckConfig struct {
-	Verificator *service.EmailVerifierService
-	Check       func(srv *service.EmailVerifierService) error
+	VerificationService service.EmailVerifierService
+	CheckFunction       func(c *fiber.Ctx, srv service.EmailVerifierService) error
 }
 
 func New(config EmailVerifyCheckConfig) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
-		verificator := config.Verificator
+		verificator := config.VerificationService
 		if verificator == nil {
 			return emailVerifierCheckerIsNull
 		}
 
-		checkFN := config.Check
+		checkFN := config.CheckFunction
 
-		if config.Check == nil {
+		if config.CheckFunction == nil {
 			return emailVerifierCheckerIsNull
 		}
 
-		return checkFN(config.Verificator)
+		return checkFN(c, config.VerificationService)
 	}
 }
