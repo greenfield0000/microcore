@@ -4,63 +4,10 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e672fd0e-f928-48c5-a80c-acf65a4e1f78" name="Changes" comment="delete useless module">
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repository.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/account.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/account_achievement.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/account_event.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/account_market.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/achievement.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/balance.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/balance_robot.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/emailverifierrepo.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/event.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/market.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/team.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/user.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/user_account.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/repository/repositoryimpl/user_team.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/service.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/account.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/account_achievement.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/account_event.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/account_market.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/achievement.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/balance.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/balancerobot.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/emailverifierservice.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/event.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/mailerservice.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/market.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/team.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/user.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/user_account.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bussines/service/serviceimpl/user_team.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/account-achievement.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/account-event.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/account-market.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/account.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/achievement.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/balance.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/balance_robot.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/emailverifier.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/event.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/market.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/state.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/team.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/user-account.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/user-team.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domains/user.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/common/mail/mailer.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/common/template/templateservice.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/microcore.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/microcore.iml" afterDir="false" />
+    <list default="true" id="e672fd0e-f928-48c5-a80c-acf65a4e1f78" name="Changes" comment="Fix EmailVerifier entity">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants/mail/emailstate.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/email/emailstate.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants/mail/emailtype.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/email/emailtype.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants/mail/emailverification.go" beforeDir="false" afterPath="$PROJECT_DIR$/constants/email/emailverification.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/service.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +58,7 @@
     "configurable.GoLibrariesConfigurable.is.expanded": "false",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/home/roman/repository/other/microcore/domains",
+    "last_opened_file_path": "/home/roman/Загрузки/seaweedfs-master",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -120,8 +67,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/domains" />
       <recent name="$PROJECT_DIR$/bussines/service/serviceimpl" />
+      <recent name="$PROJECT_DIR$/domains" />
       <recent name="$PROJECT_DIR$/bussines" />
       <recent name="$PROJECT_DIR$/service/template" />
       <recent name="$PROJECT_DIR$/service/mail" />
@@ -140,7 +87,12 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="delete useless module" />
-    <option name="LAST_COMMIT_MESSAGE" value="delete useless module" />
+    <MESSAGE value="try first version library" />
+    <MESSAGE value="Add mail and template service" />
+    <MESSAGE value="Change mail service logic" />
+    <MESSAGE value="Add email repo" />
+    <MESSAGE value="Fix EmailVerifier entity" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix EmailVerifier entity" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
