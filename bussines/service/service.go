@@ -106,7 +106,7 @@ type BalanceRobotService interface {
 type EmailVerifierService interface {
 	CreateCode(email string) (string, error)
 	VerifyCode(code string) error
-	IsVerifyCode(email string) (bool, error)
+	IsVerifyByEmail(email string) (bool, error)
 }
 
 type TemplateService interface {

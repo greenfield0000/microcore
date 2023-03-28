@@ -26,12 +26,15 @@ func NewEmailVerifierService(repository *repository.Repository, logger *logrus.L
 
 // CreateCode ...
 func (e EmailVerifierService) CreateCode(email string) (string, error) {
-	code := uuid.New().String()
-	err := e.repository.EmailVerifierRepository.CreateCode(email, code, time.Now().Add(constant.EmailVerificationLag), constant.EmailVerificationStateIdWaiting)
-	if err != nil {
-		return "", errors.New("Не удалось создать код подтверждения")
+	if ok, _ := e.IsVerifyByEmail(email); !ok {
+		code := uuid.New().String()
+		err := e.repository.EmailVerifierRepository.CreateCode(email, code, time.Now().Add(constant.EmailVerificationLag), constant.EmailVerificationStateIdWaiting)
+		if err != nil {
+			return "", errors.New("Не удалось создать код подтверждения")
+		}
+		return code, nil
 	}
-	return code, nil
+	return "", nil
 }
 
 // VerifyCode ...
@@ -62,7 +65,14 @@ func (e EmailVerifierService) VerifyCode(code string) error {
 	return nil
 }
 
-// IsVerifyCode ...
-func (e EmailVerifierService) IsVerifyCode(email string) (bool, error) {
-	return false, nil
+// IsVerifyByEmail ...
+func (e EmailVerifierService) IsVerifyByEmail(email string) (bool, error) {
+	ok, err := e.repository.EmailVerifierRepository.IsVerifyByEmail(email)
+	if err != nil {
+		return false, err
+	}
+	if !ok {
+		return false, errors.New("Требуется подтвердить почту")
+	}
+	return true, nil
 }

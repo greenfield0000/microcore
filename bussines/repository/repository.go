@@ -109,8 +109,8 @@ type EmailVerifierRepository interface {
 	GetCodeWithStatus(code string, stateId constant.EmailVerificationState) (*domains.EmailVerifier, error)
 	GetCode(code string) (*domains.EmailVerifier, error)
 	SetState(code string, stateId constant.EmailVerificationState) error
+	IsVerifyByEmail(email string) (bool, error)
 }
-
 type EmailRepository interface {
 	GetMailForVerification() ([]domains.Email, error)
 	SetState(id uint64, stateId constant.EmailState) error

@@ -50,3 +50,17 @@ func (e EmailVerifierRepositoryImpl) SetState(code string, stateId constant.Emai
 	_, err := e.db.Exec("update email_verifier set stateid = $1 where code = $2;", stateId, code)
 	return err
 }
+
+func (e EmailVerifierRepositoryImpl) IsVerifyByEmail(email string) (bool, error) {
+	var count int
+	if err := e.db.Get(&count,
+		`select count(*)
+				from email_verifier e
+						 inner join state s on s.id = e.stateid
+						 inner join state_entity se on se.id = s.stateentityid
+				where se.sysname = 'EMAIL_VERIFICATION' and e.email = $1 and s.sysname = 'CONFIRMED';
+			`, email); err != nil {
+		return false, err
+	}
+	return count != 0, nil
+}
