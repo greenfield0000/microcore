@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/greenfield0000/microcore/bussines/service"
+	httpcommon "github.com/greenfield0000/microcore/common"
 )
 
 var emailVerifierCheckerIsNull = fmt.Errorf("Необходимо передать кинфигурацию для проверки")
@@ -29,7 +30,7 @@ func New(config EmailVerifyCheckConfig) fiber.Handler {
 		err := checkFN(c, config.VerificationService)
 
 		if err != nil {
-			return err
+			return c.JSON(httpcommon.CreateErrorMessage(err.Error()))
 		}
 
 		return c.Next()
