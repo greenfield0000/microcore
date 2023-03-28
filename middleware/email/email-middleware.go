@@ -13,10 +13,10 @@ type EmailVerifyCheckConfig struct {
 	CheckFunction       func(c *fiber.Ctx, srv service.EmailVerifierService) error
 }
 
-func New(config EmailVerifyCheckConfig) func(c *fiber.Ctx) error {
+func New(config EmailVerifyCheckConfig) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		verificator := config.VerificationService
-		if verificator == nil {
+		verification := config.VerificationService
+		if verification == nil {
 			return emailVerifierCheckerIsNull
 		}
 
