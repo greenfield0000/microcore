@@ -26,6 +26,12 @@ func New(config EmailVerifyCheckConfig) fiber.Handler {
 			return emailVerifierCheckerIsNull
 		}
 
-		return checkFN(c, config.VerificationService)
+		err := checkFN(c, config.VerificationService)
+
+		if err != nil {
+			return err
+		}
+
+		return c.Next()
 	}
 }
