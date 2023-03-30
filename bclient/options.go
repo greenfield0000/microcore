@@ -2,8 +2,8 @@ package bclient
 
 import "time"
 
-// clientOptions ...
-type clientOptions struct {
+// ClientOptions ...
+type ClientOptions struct {
 	RequestUri     string
 	RequestTimeout time.Duration
 }

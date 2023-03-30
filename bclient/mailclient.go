@@ -3,11 +3,11 @@ package bclient
 import "github.com/gofiber/fiber/v2"
 
 type EmailClient struct {
-	options *clientOptions
+	options *ClientOptions
 }
 
 // NewEmailClient ...
-func NewEmailClient(options *clientOptions) EmailClient {
+func NewEmailClient(options *ClientOptions) EmailClient {
 	return EmailClient{
 		options: options,
 	}
