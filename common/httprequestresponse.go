@@ -5,7 +5,7 @@ type BaseResponse struct {
 	Result       interface{} `json:"result"`
 }
 
-func CreateResponseResult(result interface{}) BaseResponse {
+func CreateSuccessResult(result interface{}) BaseResponse {
 	return BaseResponse{
 		ErrorMessage: "",
 		Result:       result,
