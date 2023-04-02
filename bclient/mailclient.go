@@ -1,6 +1,9 @@
 package bclient
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	"os"
+)
 
 type EmailClient struct {
 	options *ClientOptions
@@ -8,6 +11,10 @@ type EmailClient struct {
 
 // NewEmailClient ...
 func NewEmailClient(options *ClientOptions) EmailClient {
+	if len(options.RequestUri) == 0 {
+		options.RequestUri = os.Getenv("MAIL_SERVICE")
+	}
+
 	return EmailClient{
 		options: options,
 	}
