@@ -7,6 +7,7 @@ import (
 	"github.com/greenfield0000/microcore/bussines/service"
 	constant "github.com/greenfield0000/microcore/constants/email"
 	"github.com/sirupsen/logrus"
+	"log"
 
 	"time"
 )
@@ -42,6 +43,7 @@ func (e EmailVerifierService) VerifyCode(code string) error {
 	// нам нужно проверить, существует ли такой код
 	data, err := e.repository.EmailVerifierRepository.GetCode(code)
 	if err != nil {
+		log.Printf(err.Error())
 		return errors.New("Не удалось проверить код")
 	}
 	if data.StateId == uint64(constant.EmailVerificationStateIdConfirmed) {
@@ -54,12 +56,14 @@ func (e EmailVerifierService) VerifyCode(code string) error {
 	if now.UTC().After(data.VerifyCodeTo.UTC()) {
 		err := e.repository.EmailVerifierRepository.SetState(code, constant.EmailVerificationStateIdError)
 		if err != nil {
+			log.Printf(err.Error())
 			return errors.New("Не удалось подтвердить почту")
 		}
 		return errors.New("Данный код истек")
 	}
 	err = e.repository.EmailVerifierRepository.SetState(code, constant.EmailVerificationStateIdConfirmed)
 	if err != nil {
+		log.Printf(err.Error())
 		return errors.New("Не удалось подтвердить почту")
 	}
 	return nil
