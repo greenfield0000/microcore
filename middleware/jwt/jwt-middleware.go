@@ -4,8 +4,15 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v3"
+	"github.com/golang-jwt/jwt/v4"
 	httpcommon "github.com/greenfield0000/microcore/common"
 	"os"
+)
+
+const (
+	authorizationHeaderName = fiber.HeaderAuthorization
+	refreshTokenHeaderName  = "refresh-token"
+	bearer                  = "Bearer "
 )
 
 type AuthHeader struct {
@@ -15,17 +22,34 @@ type AuthHeader struct {
 
 // AuthRequired требуется авторизация при вызове ручки
 func AuthRequired() fiber.Handler {
-
+	jwtAccessSecret := []byte(os.Getenv("JWT_ACCESS_SECRET"))
+	jwtRefreshSecret := []byte(os.Getenv("JWT_REFRESH_SECRET"))
 	return jwtware.New(jwtware.Config{
-		SigningKey: []byte(os.Getenv("JWT_ACCESS_SECRET")),
+		SigningKey: jwtAccessSecret,
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
+
+			// пробуем сначала обновить токены
+			// смотрим на рефреш токен
+
 			header := new(AuthHeader)
-			if err := c.ReqHeaderParser(header); err != nil {
-				return err
+			if parseErr := c.ReqHeaderParser(header); parseErr != nil {
+				return parseErr
 			}
 
-			_ = fmt.Errorf("header Authorization is %s", header.Authorization)
-			_ = fmt.Errorf("map RefreshToken is %s", header.RefreshToken)
+			refreshToken, err := jwt.Parse(header.RefreshToken, func(token *jwt.Token) (interface{}, error) {
+				return jwtRefreshSecret, nil
+			})
+
+			if err != nil {
+				return c.Status(fiber.StatusUnauthorized).JSON(httpcommon.CreateErrorMessage("Сессия пользователя истекла"))
+			}
+
+			_, ok := refreshToken.Claims.(jwt.MapClaims)
+			if ok && refreshToken.Valid {
+				c.Append(authorizationHeaderName, fmt.Sprintf("%s %s", bearer, "новое значение аксес токена"))
+				c.Append(refreshTokenHeaderName, fmt.Sprintf("%s %s", bearer, "новое значение рефреш токена"))
+				return nil
+			}
 
 			if err.Error() == "Missing or malformed JWT" {
 				return c.Status(fiber.StatusUnauthorized).JSON(httpcommon.CreateErrorMessage("Пользователь не авторизован"))
