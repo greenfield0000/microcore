@@ -46,8 +46,8 @@ func AuthRequired() fiber.Handler {
 
 			_, ok := refreshToken.Claims.(jwt.MapClaims)
 			if ok && refreshToken.Valid {
-				c.Append(authorizationHeaderName, fmt.Sprintf("%s %s", bearer, "новое значение аксес токена"))
-				c.Append(refreshTokenHeaderName, fmt.Sprintf("%s %s", bearer, "новое значение рефреш токена"))
+				c.Append(authorizationHeaderName, fmt.Sprintf("%s %s", bearer, "new Access Token"))
+				c.Append(refreshTokenHeaderName, fmt.Sprintf("%s %s", bearer, "new Refresh Token"))
 				return nil
 			}
 
