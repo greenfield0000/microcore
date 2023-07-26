@@ -27,11 +27,7 @@ func AuthRequired() fiber.Handler {
 	return jwtware.New(jwtware.Config{
 		SigningKey: jwtAccessSecret,
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
-
-			// пробуем сначала обновить токены
-			// смотрим на рефреш токен
-
-			header := new(AuthHeader)
+			header := &AuthHeader{}
 			if parseErr := c.ReqHeaderParser(header); parseErr != nil {
 				return parseErr
 			}
@@ -47,7 +43,7 @@ func AuthRequired() fiber.Handler {
 			_, ok := refreshToken.Claims.(jwt.MapClaims)
 			if ok && refreshToken.Valid {
 				c.Append(authorizationHeaderName, fmt.Sprintf("%s %s", bearer, "new Access Token"))
-				c.Append(refreshTokenHeaderName, fmt.Sprintf("%s %s", bearer, "new Refresh Token"))
+				c.Append(refreshTokenHeaderName, fmt.Sprintf("%s", "new Refresh Token"))
 				return nil
 			}
 
