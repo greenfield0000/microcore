@@ -36,11 +36,11 @@ func AuthRequired() fiber.Handler {
 				return parseErr
 			}
 
-			refreshToken, err := jwt.Parse(header.RefreshToken, func(token *jwt.Token) (interface{}, error) {
+			refreshToken, parseErr := jwt.Parse(header.RefreshToken, func(token *jwt.Token) (interface{}, error) {
 				return jwtRefreshSecret, nil
 			})
 
-			if err != nil {
+			if parseErr != nil {
 				return c.Status(fiber.StatusUnauthorized).JSON(httpcommon.CreateErrorMessage("Сессия пользователя истекла"))
 			}
 
