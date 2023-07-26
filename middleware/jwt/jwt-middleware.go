@@ -19,8 +19,8 @@ func AuthRequired() fiber.Handler {
 	return jwtware.New(jwtware.Config{
 		SigningKey: []byte(os.Getenv("JWT_ACCESS_SECRET")),
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
-			header := new(authHeader)
-			if err := c.ReqHeaderParser(&header); err != nil {
+			var header authHeader
+			if err := c.ReqHeaderParser(header); err != nil {
 				return err
 			}
 
