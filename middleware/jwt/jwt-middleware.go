@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-type authHeader struct {
+type AuthHeader struct {
 	Authorization string `reqHeader:"Authorization"`
 	RefreshToken  string `reqHeader:"refresh-token"`
 }
@@ -19,7 +19,7 @@ func AuthRequired() fiber.Handler {
 	return jwtware.New(jwtware.Config{
 		SigningKey: []byte(os.Getenv("JWT_ACCESS_SECRET")),
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
-			var header authHeader
+			header := new(AuthHeader)
 			if err := c.ReqHeaderParser(header); err != nil {
 				return err
 			}
