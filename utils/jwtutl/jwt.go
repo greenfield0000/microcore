@@ -21,8 +21,8 @@ var (
 )
 
 type TokenPair struct {
-	AccessToken  string `reqHeader:"AccessToken"`
-	RefreshToken string `reqHeader:"refresh-token"`
+	AccessToken  string `reqHeader:"Authorization"`
+	RefreshToken string `reqHeader:"Refresh-Token"`
 }
 
 type JwtTokenPair struct {
