@@ -15,11 +15,6 @@ const (
 	REFRESH_TOKEN_TYPE
 )
 
-var (
-	defaultAccessExpTime  = time.Now().Add(time.Minute * 1).Unix()
-	DefaultRefreshExpTime = time.Now().Add(time.Hour * 2).Unix()
-)
-
 type TokenPair struct {
 	AccessToken  string `reqHeader:"Authorization"`
 	RefreshToken string `reqHeader:"Refresh-Token"`
@@ -58,6 +53,9 @@ func NewCommonJwtManager() JwtManager {
 
 // CreateTokenPair ...
 func (c CommonJwtManager) CreateTokenPair(property TokenPairProperty) (TokenPair, error) {
+	defaultAccessExpTime := time.Now().Add(time.Minute * 1).Unix()
+	DefaultRefreshExpTime := time.Now().Add(time.Hour * 2).Unix()
+
 	defaultError := fmt.Errorf("Во время авторизации произошла ошибка")
 	accessClaims := jwt.MapClaims{
 		"email":      property.Email,
