@@ -11,8 +11,8 @@ import (
 type TokenType int
 
 const (
-	ACCESS_TOKEN TokenType = iota
-	REFRESH_TOKEN
+	ACCESS_TOKEN_TYPE TokenType = iota
+	REFRESH_TOKEN_TYPE
 )
 
 var (
@@ -96,13 +96,15 @@ func (c CommonJwtManager) RefreshTokenPair(pair JwtTokenPair) (TokenPair, error)
 
 // ParseToken ...
 func (c CommonJwtManager) ParseToken(tokenType TokenType, token string) (*jwt.Token, error) {
-	return jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
-		switch tokenType {
-		case ACCESS_TOKEN:
-			return c.jwtAccessSecret, nil
-		case REFRESH_TOKEN:
+	// Парсим access
+	parseFunc := func(token *jwt.Token) (interface{}, error) {
+		return c.jwtAccessSecret, nil
+	}
+	// Парсим refresh
+	if tokenType == REFRESH_TOKEN_TYPE {
+		parseFunc = func(token *jwt.Token) (interface{}, error) {
 			return c.jwtRefreshSecret, nil
 		}
-		return nil, jwt.ValidationError{}
-	})
+	}
+	return jwt.Parse(token, parseFunc)
 }
