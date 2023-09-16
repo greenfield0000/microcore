@@ -36,7 +36,7 @@ func ErrorHandler(c *fiber.Ctx, err error) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(httpcommon.CreateErrorMessage("Сессия пользователя истекла"))
 	}
 
-	oldAccessToken, _ := jwtManager.ParseToken(jwtutl.ACCESS_TOKEN_TYPE, header.AccessToken[len(bearer)+1:])
+	oldAccessToken, _ := jwtManager.ParseToken(jwtutl.ACCESS_TOKEN_TYPE, header.AccessToken[len(bearer):])
 	tokenPair, err := jwtManager.RefreshTokenPair(jwtutl.JwtTokenPair{AccessToken: oldAccessToken, RefreshToken: oldRefreshToken})
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(httpcommon.CreateErrorMessage("Сессия пользователя истекла"))
