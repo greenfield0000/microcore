@@ -7,6 +7,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/greenfield0000/microcore/bussines/service"
 	httpcommon "github.com/greenfield0000/microcore/common"
+	"github.com/greenfield0000/microcore/utils/jwtutl"
 )
 
 var emailVerifierCheckerIsNull = fmt.Errorf("Необходимо передать кинфигурацию для проверки")
@@ -22,7 +23,7 @@ func newEmailVerifyCheckConfig(s *service.Service) EmailVerifyCheckConfig {
 	return EmailVerifyCheckConfig{
 		VerificationService: s.EmailVerifierService,
 		CheckFunction: func(c *fiber.Ctx, service service.EmailVerifierService) error {
-			user := c.Locals("user")
+			user := c.Locals(jwtutl.UserLocalNameKey)
 			if user == nil {
 				return errors.New("Для выполнения данного действия требуется подтвердить электронную почту")
 			}

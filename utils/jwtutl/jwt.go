@@ -15,6 +15,8 @@ const (
 	REFRESH_TOKEN_TYPE
 )
 
+const UserLocalNameKey = "user"
+
 type TokenPair struct {
 	AccessToken  string `reqHeader:"Authorization"`
 	RefreshToken string `reqHeader:"Refresh-Token"`

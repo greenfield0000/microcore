@@ -15,15 +15,13 @@ const (
 	bearer                  = "Bearer "
 )
 
-var userLocalNameKey string
-
 // AuthRequired требуется авторизация при вызове ручки
 func AuthRequired() fiber.Handler {
 	config := jwtware.Config{
 		SigningKey:   []byte(os.Getenv("JWT_ACCESS_SECRET")),
 		ErrorHandler: ErrorHandler,
+		ContextKey:   jwtutl.UserLocalNameKey,
 	}
-	userLocalNameKey = config.ContextKey
 	return jwtware.New(config)
 }
 
@@ -46,7 +44,7 @@ func ErrorHandler(c *fiber.Ctx, err error) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(httpcommon.CreateErrorMessage("Сессия пользователя истекла"))
 	}
 
-	c.Locals(userLocalNameKey, tokenPair.AccessToken)
+	c.Locals(jwtutl.UserLocalNameKey, tokenPair.AccessToken)
 
 	c.Append(authorizationHeaderName, fmt.Sprintf("%s %s", bearer, tokenPair.AccessToken))
 	c.Append(refreshTokenHeaderName, fmt.Sprintf("%s", tokenPair.RefreshToken))
