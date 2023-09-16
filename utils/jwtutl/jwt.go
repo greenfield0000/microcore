@@ -2,7 +2,6 @@ package jwtutl
 
 import (
 	"errors"
-	"fmt"
 	"github.com/golang-jwt/jwt/v4"
 	"os"
 	"time"
@@ -23,8 +22,10 @@ type TokenPair struct {
 }
 
 type JwtTokenPair struct {
-	AccessToken  *jwt.Token
-	RefreshToken *jwt.Token
+	AccessToken     *jwt.Token
+	AccessTokenStr  string
+	RefreshToken    *jwt.Token
+	RefreshTokenStr string
 }
 
 type TokenPairProperty struct {
@@ -34,8 +35,8 @@ type TokenPairProperty struct {
 
 // JwtManager ...
 type JwtManager interface {
-	CreateTokenPair(property TokenPairProperty) (TokenPair, error)
-	RefreshTokenPair(pair JwtTokenPair) (TokenPair, error)
+	CreateTokenPair(property TokenPairProperty) (JwtTokenPair, error)
+	RefreshTokenPair(pair JwtTokenPair) (JwtTokenPair, error)
 	ParseToken(tokenType TokenType, token string) (*jwt.Token, error)
 }
 
@@ -54,30 +55,36 @@ func NewCommonJwtManager() JwtManager {
 }
 
 // CreateTokenPair ...
-func (c CommonJwtManager) CreateTokenPair(property TokenPairProperty) (TokenPair, error) {
+func (c CommonJwtManager) CreateTokenPair(property TokenPairProperty) (JwtTokenPair, error) {
 	defaultAccessExpTime := time.Now().Add(time.Minute * 1).Unix()
 	DefaultRefreshExpTime := time.Now().Add(time.Hour * 2).Unix()
 
-	defaultError := fmt.Errorf("Во время авторизации произошла ошибка")
-	accessClaims := jwt.MapClaims{
-		"email":      property.Email,
-		"account_id": property.AccountId,
-		"exp":        defaultAccessExpTime,
-	}
-	accessToken, err := jwt.NewWithClaims(jwt.SigningMethodHS256, accessClaims).SignedString(c.jwtAccessSecret)
-	if err != nil {
-		return TokenPair{}, defaultError
-	}
+	accessClaims := jwt.MapClaims{"email": property.Email, "account_id": property.AccountId, "exp": defaultAccessExpTime}
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessClaims)
+
 	refreshClaims := jwt.MapClaims{"exp": DefaultRefreshExpTime}
-	refreshToken, err := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims).SignedString(c.jwtRefreshSecret)
+	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims)
+
+	accessTokenStr, err := accessToken.SignedString(c.jwtAccessSecret)
 	if err != nil {
-		return TokenPair{}, defaultError
+		return JwtTokenPair{}, err
 	}
-	return TokenPair{AccessToken: accessToken, RefreshToken: refreshToken}, nil
+
+	refreshTokenStr, err := refreshToken.SignedString(c.jwtRefreshSecret)
+	if err != nil {
+		return JwtTokenPair{}, err
+	}
+
+	return JwtTokenPair{
+		AccessToken:     accessToken,
+		AccessTokenStr:  accessTokenStr,
+		RefreshToken:    refreshToken,
+		RefreshTokenStr: refreshTokenStr,
+	}, nil
 }
 
 // RefreshTokenPair ...
-func (c CommonJwtManager) RefreshTokenPair(pair JwtTokenPair) (TokenPair, error) {
+func (c CommonJwtManager) RefreshTokenPair(pair JwtTokenPair) (JwtTokenPair, error) {
 	oldAccessTokenClaims := pair.AccessToken
 	oldRefreshToken := pair.RefreshToken
 
@@ -87,7 +94,7 @@ func (c CommonJwtManager) RefreshTokenPair(pair JwtTokenPair) (TokenPair, error)
 	defaultErr := errors.New("Не удалось обновить токены")
 
 	if !(okR && okA && oldRefreshToken.Valid) {
-		return TokenPair{}, defaultErr
+		return JwtTokenPair{}, defaultErr
 	}
 
 	return c.CreateTokenPair(TokenPairProperty{
