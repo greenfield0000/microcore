@@ -44,7 +44,7 @@ func ErrorHandler(c *fiber.Ctx, err error) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(httpcommon.CreateErrorMessage("Сессия пользователя истекла"))
 	}
 
-	c.Locals(jwtutl.UserLocalNameKey, tokenPair.AccessTokenStr)
+	c.Locals(jwtutl.UserLocalNameKey, tokenPair.AccessToken)
 
 	c.Append(authorizationHeaderName, fmt.Sprintf("%s %s", bearer, tokenPair.AccessTokenStr))
 	c.Append(refreshTokenHeaderName, fmt.Sprintf("%s", tokenPair.AccessTokenStr))
