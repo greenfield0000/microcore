@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/golang-jwt/jwt/v4"
 	"os"
-	"strconv"
 	"time"
 )
 
@@ -91,16 +90,9 @@ func (c CommonJwtManager) RefreshTokenPair(pair JwtTokenPair) (TokenPair, error)
 		return TokenPair{}, defaultErr
 	}
 
-	accountId, err := strconv.ParseUint(oldAccessClaims["account_id"].(string), 10, 64)
-	if err != nil {
-		return TokenPair{}, defaultErr
-	}
-
-	email := oldAccessClaims["email"].(string)
-
 	return c.CreateTokenPair(TokenPairProperty{
-		Email:     email,
-		AccountId: accountId,
+		Email:     oldAccessClaims["email"].(string),
+		AccountId: uint64(oldAccessClaims["account_id"].(float64)),
 	})
 }
 
