@@ -9,7 +9,7 @@ type ValidationHandler func(errors validator.ValidationErrors) error
 
 // Validator метод валидации структуры
 type Validator interface {
-	ValidateStruct(strct struct{}, handler ValidationHandler) error
+	ValidateStruct(strct interface{}, handler ValidationHandler) error
 }
 
 // CommonValidator реализация валидатора по-умолчанию
