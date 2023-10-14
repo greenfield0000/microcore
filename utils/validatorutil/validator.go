@@ -25,7 +25,7 @@ func customNotEmpty(fl validator.FieldLevel) bool {
 // NewCommonValidator ...
 func NewCommonValidator() (CommonValidator, error) {
 	v := validator.New()
-	err := v.RegisterValidation("notEmpty", customNotEmpty)
+	err := v.RegisterValidation("notEmpty", customNotEmpty, true)
 	if err != nil {
 		return CommonValidator{}, err
 	}
