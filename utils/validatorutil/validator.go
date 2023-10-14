@@ -17,11 +17,20 @@ type CommonValidator struct {
 	validator *validator.Validate
 }
 
+func customNotEmpty(fl validator.FieldLevel) bool {
+	value := fl.Field().String()
+	return value != ""
+}
+
 // NewCommonValidator ...
-func NewCommonValidator() CommonValidator {
-	return CommonValidator{
-		validator: validator.New(),
+func NewCommonValidator() (CommonValidator, error) {
+	v := validator.New()
+	err := v.RegisterValidation("notEmpty", customNotEmpty)
+	if err != nil {
+		return CommonValidator{}, err
 	}
+
+	return CommonValidator{validator: v}, nil
 }
 
 // ValidateStruct метод валидации структуры с общей обработкой
