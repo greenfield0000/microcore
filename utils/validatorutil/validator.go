@@ -25,7 +25,7 @@ func NewCommonValidator() CommonValidator {
 }
 
 // ValidateStruct метод валидации структуры с общей обработкой
-func (v *CommonValidator) ValidateStruct(strct struct{}, handler ValidationHandler) error {
+func (v *CommonValidator) ValidateStruct(strct interface{}, handler ValidationHandler) error {
 	err := v.validator.Struct(strct)
 	if err != nil {
 		return handler(err.(validator.ValidationErrors))
