@@ -56,13 +56,13 @@ func NewCommonJwtManager() JwtManager {
 
 // CreateTokenPair ...
 func (c CommonJwtManager) CreateTokenPair(property TokenPairProperty) (JwtTokenPair, error) {
-	defaultAccessExpTime := time.Now().Add(time.Minute * 1).Unix()
-	DefaultRefreshExpTime := time.Now().Add(time.Hour * 2).Unix()
+	defaultAccessExpTime := time.Now().Add(time.Minute * 15).Unix()
+	defaultRefreshExpTime := time.Now().Add(time.Hour * 24).Unix()
 
 	accessClaims := jwt.MapClaims{"email": property.Email, "account_id": property.AccountId, "exp": defaultAccessExpTime}
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessClaims)
 
-	refreshClaims := jwt.MapClaims{"exp": DefaultRefreshExpTime}
+	refreshClaims := jwt.MapClaims{"exp": defaultRefreshExpTime}
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims)
 
 	accessTokenStr, err := accessToken.SignedString(c.jwtAccessSecret)
