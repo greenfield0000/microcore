@@ -89,7 +89,7 @@ func (c CommonJwtManager) RefreshTokenPair(pair JwtTokenPair) (JwtTokenPair, err
 	oldRefreshToken := pair.RefreshToken
 
 	_, okR := oldRefreshToken.Claims.(jwt.MapClaims)
-	oldAccessClaims, okA := oldAccessTokenClaims.Claims.(jwt.MapClaims)
+	claims, okA := oldAccessTokenClaims.Claims.(jwt.MapClaims)
 
 	defaultErr := errors.New("Не удалось обновить токены")
 
@@ -98,8 +98,8 @@ func (c CommonJwtManager) RefreshTokenPair(pair JwtTokenPair) (JwtTokenPair, err
 	}
 
 	return c.CreateTokenPair(TokenPairProperty{
-		Email:     oldAccessClaims["email"].(string),
-		AccountId: oldAccessClaims["account_id"].(uint64),
+		Email:     claims["email"].(string),
+		AccountId: uint64(claims["account_id"].(float64)),
 	})
 }
 

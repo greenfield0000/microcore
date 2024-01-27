@@ -30,7 +30,7 @@ func (u *TeamRepositoryIml) Create(team domains.Team) (uint64, error) {
 
 func (u *TeamRepositoryIml) GetById(id uint64) (*domains.Team, error) {
 	var team domains.Team
-	if err := u.db.Get(&team, "SELECT * from team where id = $1", id); err != nil {
+	if err := u.db.Get(&team, "SELECT id, name, sysname, createat from team where id = $1", id); err != nil {
 		return nil, err
 	}
 	return &team, nil
