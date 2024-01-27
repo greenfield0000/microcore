@@ -99,7 +99,7 @@ func (c CommonJwtManager) RefreshTokenPair(pair JwtTokenPair) (JwtTokenPair, err
 
 	return c.CreateTokenPair(TokenPairProperty{
 		Email:     oldAccessClaims["email"].(string),
-		AccountId: uint64(oldAccessClaims["account_id"].(float64)),
+		AccountId: oldAccessClaims["account_id"].(uint64),
 	})
 }
 
