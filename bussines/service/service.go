@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+
 	"github.com/greenfield0000/microcore/domains"
 	"github.com/sirupsen/logrus"
 )
@@ -120,20 +121,20 @@ type MailService interface {
 type Service struct {
 	logger *logrus.Logger
 
-	AccountService
-	UserService
-	TeamService
-	AchievementService
-	MarketService
-	UserTeamService
-	UserAccountService
-	AccountAchievementService
-	AccountMarketService
-	AccountEventService
-	EventService
-	BalanceService
-	BalanceRobotService
-	EmailVerifierService
-	TemplateService
-	MailService
+	AccountService            AccountService
+	UserService               UserService
+	TeamService               TeamService
+	AchievementService        AchievementService
+	MarketService             MarketService
+	UserTeamService           UserTeamService
+	UserAccountService        UserAccountService
+	AccountAchievementService AccountAchievementService
+	AccountMarketService      AccountMarketService
+	AccountEventService       AccountEventService
+	EventService              EventService
+	BalanceService            BalanceService
+	BalanceRobotService       BalanceRobotService
+	EmailVerifierService      EmailVerifierService
+	TemplateService           TemplateService
+	MailService               MailService
 }

@@ -2,10 +2,11 @@ package repository
 
 import (
 	"context"
+	"time"
+
 	constant "github.com/greenfield0000/microcore/constants/email"
 	"github.com/greenfield0000/microcore/domains"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 type AccountRepository interface {
@@ -119,19 +120,19 @@ type EmailRepository interface {
 type Repository struct {
 	logger *logrus.Logger
 
-	AccountRepository
-	UserRepository
-	TeamRepository
-	AchievementRepository
-	MarketRepository
-	UserTeamRepository
-	UserAccountRepository
-	AccountAchievementRepository
-	AccountMarketRepository
-	AccountEventRepository
-	EventRepository
-	BalanceRepository
-	BalanceRobotRepository
-	EmailVerifierRepository
-	EmailRepository
+	AccountRepository            AccountRepository
+	UserRepository               UserRepository
+	TeamRepository               TeamRepository
+	AchievementRepository        AchievementRepository
+	MarketRepository             MarketRepository
+	UserTeamRepository           UserTeamRepository
+	UserAccountRepository        UserAccountRepository
+	AccountAchievementRepository AccountAchievementRepository
+	AccountMarketRepository      AccountMarketRepository
+	AccountEventRepository       AccountEventRepository
+	EventRepository              EventRepository
+	BalanceRepository            BalanceRepository
+	BalanceRobotRepository       BalanceRobotRepository
+	EmailVerifierRepository      EmailVerifierRepository
+	EmailRepository              EmailRepository
 }
